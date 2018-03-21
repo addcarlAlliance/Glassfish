@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author addcarl
  */
 public class SServlet extends HttpServlet {
-
+        
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
@@ -33,7 +33,7 @@ public class SServlet extends HttpServlet {
     {
         BleOverDriver ble = new BleOverDriver();
         String text = request.getParameter("textfield");
-              
+                      
         try {
             ble.driver(text);
         } catch (Exception ex) {

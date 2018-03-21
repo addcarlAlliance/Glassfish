@@ -11,6 +11,9 @@ and open the template in the editor.
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
+    <@BLE 
+        display("<h1>Hello</h1>")
+    @>
         <form action="SServlet">
             <textarea rows="8" cols="50" name = "textfield"></textarea>
             <input type ="submit" value="Ok">
