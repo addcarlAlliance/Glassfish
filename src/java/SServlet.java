@@ -21,11 +21,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class SServlet extends HttpServlet {
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        System.out.println("HELLO");
         doPost(request,response);
     }
     
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
         BleOverDriver ble = new BleOverDriver();
