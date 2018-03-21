@@ -7,18 +7,12 @@
         <servlet-name>SServlet</servlet-name>
         <servlet-class>SServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>Index</servlet-name>
-        <servlet-class>IndexController</servlet-class>
-    </servlet>
+ 
     <servlet>
         <servlet-name>IndexController</servlet-name>
         <servlet-class>ble.Servlet.IndexController</servlet-class>
     </servlet>
-    <servlet-mapping>
-        <servlet-name>Index</servlet-name>
-        <url-pattern>/index.ble</url-pattern>
-    </servlet-mapping>
+ 
     <servlet-mapping>
         <servlet-name>SServlet</servlet-name>
         <url-pattern>/SServlet</url-pattern>
