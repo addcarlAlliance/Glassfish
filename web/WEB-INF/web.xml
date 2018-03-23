@@ -14,12 +14,8 @@
     </servlet>
  
     <servlet-mapping>
-        <servlet-name>SServlet</servlet-name>
-        <url-pattern>/SServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>IndexController</servlet-name>
-        <url-pattern>/*</url-pattern>
+        <url-pattern>/([A-Za-z|0-9])*\.(html|ble)</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -6,11 +6,17 @@
 package ble.Servlet;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.nio.file.Files;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
+import java.net.URL;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,14 +40,25 @@ public class IndexController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        InputStream is;
+        BufferedReader bf;
+        ServletContext context;
+        String path;
         
-        String path = request.getRequestURI().substring(request.getContextPath().length());
-        path = path.replace("/","");
-        response.setContentType("text/html;charset=UTF-8");
-        if("index".equalsIgnoreCase(path)){
-           File f = new File(getServletContext().getRealPath("index.ble"));
-           FileReader file = new FileReader(f);
-           BufferedReader bf = new BufferedReader(file);
+        context = request.getServletContext();
+        path = request.getRequestURI().substring(request.getContextPath().length());
+        
+        System.out.println(path);
+       
+        if(path.equals("/")) {
+            path = "/index.ble";
+        }
+        
+        is = context.getResourceAsStream(path);
+        
+        if(is != null) {
+            
+           bf = new BufferedReader(new InputStreamReader(is));
           
            try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
@@ -50,16 +67,11 @@ public class IndexController extends HttpServlet {
 		out.println(currline);
             }
 //            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet "+path+" sds</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet IndexController at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
         }
-       }
+        } else {
+            PrintWriter out = response.getWriter();
+            out.println("404 Page not found");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
