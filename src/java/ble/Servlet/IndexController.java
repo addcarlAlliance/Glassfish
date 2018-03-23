@@ -16,6 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,7 +45,9 @@ public class IndexController extends HttpServlet {
         InputStream is;
         BufferedReader bf;
         ServletContext context;
+        List<String> lines;
         String path;
+        String currline;
         
         context = request.getServletContext();
         path = request.getRequestURI().substring(request.getContextPath().length());
@@ -58,16 +62,15 @@ public class IndexController extends HttpServlet {
         
         if(is != null) {
             
-           bf = new BufferedReader(new InputStreamReader(is));
+            bf = new BufferedReader(new InputStreamReader(is));
           
-           try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            String currline;
-             while ((currline = bf.readLine()) != null) {
-		out.println(currline);
+            try (PrintWriter out = response.getWriter()) {
+                lines = new ArrayList<>();
+                while ((currline = bf.readLine()) != null) {
+                    lines.add(currline);
+                    out.println(currline);
+                }
             }
-//            out.println("<!DOCTYPE html>");
-        }
         } else {
             PrintWriter out = response.getWriter();
             out.println("404 Page not found");
