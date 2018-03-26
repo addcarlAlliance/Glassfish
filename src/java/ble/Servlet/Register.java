@@ -40,7 +40,6 @@ public class Register extends HttpServlet {
             String pass = request.getParameter("password");
             Statement stmt;
             
-           
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn;
 

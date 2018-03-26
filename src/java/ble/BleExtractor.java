@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.StringReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,28 +23,32 @@ public class BleExtractor {
 		
 	}
 	
-	public String extractBle(File file) throws FileNotFoundException, IOException {
+	public String extractBle(String bleCode) throws FileNotFoundException, IOException {
 		String temp = "", text = null;
-		BufferedReader reader = new BufferedReader(new FileReader(file));
+	/*	BufferedReader reader = new BufferedReader(new StringReader(bleCode));
 		
 		while((text = reader.readLine()) != null) {
-			temp += text.trim();
+			temp += text;
 			temp += "\n";
 		}
 		
-		
+	*/	
 		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(temp);
+		Matcher m = p.matcher(bleCode);
 		//String filename = file.getName();
 		
 		
 		//BufferedWriter writer = new BufferedWriter(new FileWriter(new File("bledocs/extracted_"+filename)));
-		m.find();
+		if(m.find()) {
+                    return m.group();
+                } else {
+                    return "";
+                }
 		//writer.write(m.group());
 		//System.out.println(m.group());
 		
 		//writer.close();
-		reader.close();
-		return m.group();
+		//reader.close();
+		
 	}
 }
