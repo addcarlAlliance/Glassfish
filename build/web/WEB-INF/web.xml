@@ -24,8 +24,8 @@
         <servlet-class>ble.Servlet.Logout</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>NewServlet</servlet-name>
-        <servlet-class>ble.Servlet.NewServlet</servlet-class>
+        <servlet-name>Register</servlet-name>
+        <servlet-class>ble.Servlet.Register</servlet-class>
     </servlet>
     
     <servlet-mapping>
@@ -56,8 +56,8 @@
         <url-pattern>/Logout</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>NewServlet</servlet-name>
-        <url-pattern>/NewServlet</url-pattern>
+        <servlet-name>Register</servlet-name>
+        <url-pattern>/Register</url-pattern>
     </servlet-mapping>
     
     <session-config>
