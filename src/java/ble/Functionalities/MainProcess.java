@@ -1,12 +1,14 @@
 package ble.Functionalities;
 
 import ble.SyntaxAnalyzer.Data;
+import ble.SyntaxAnalyzer.DataTypes;
 import ble.SyntaxAnalyzer.Queue_stack;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.ARRAYS;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.CONDITIONAL;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.COOKIES;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.DB;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.CUSTOM_DT;
+import static ble.SyntaxAnalyzer.SyntaxAnalyzer.DATATYPES;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.DISPLAY;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.FORLOOP;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.REPEAT;
@@ -33,6 +35,17 @@ public class MainProcess {
         String status;
 
         status = "Ok";
+        
+        p = Pattern.compile(DATATYPES);
+        m = p.matcher(line[idx]);
+        if(m.find()){
+            DataTypes dTypes = new DataTypes(); 
+            DataTypes.storeVar(line[idx]);
+            System.out.println("DECLARED MAYBE");
+            DataTypes.printAllVars(); 
+        
+        }
+        
         p = Pattern.compile(REPEAT);
         m = p.matcher(line[idx]);
 
@@ -129,8 +142,12 @@ public class MainProcess {
         m = p.matcher(line[idx]);
 
         if(m.find()) {
-            ArraysFunct.arrayStuff(line[idx], data.vars);
-            ArraysFunct.findFunction(data.vars);
+            ArraysFunct.arrayStuff(line[idx], DataTypes.vars);
+            ArraysFunct.findFunction(DataTypes.vars);
+        }
+        
+        if(Fetch.check(line[idx])) {
+            Fetch.fetchExecute(line[idx]);
         }
         
         return status;

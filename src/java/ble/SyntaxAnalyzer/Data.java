@@ -1,4 +1,8 @@
 package ble.SyntaxAnalyzer;
+
+import ble.objects.Array2dBle;
+import ble.objects.ArrayBle;
+
 public class Data<T> {
 
     private T value; 
@@ -10,13 +14,9 @@ public class Data<T> {
     {
         return varScope;
     }
-    
-    public void setScope(int scope) {
-    	this.varScope = scope;
-    }
 
     public T getValue() {
-    	return value;
+	return value;
     }
 
     public void setValue(T value) 

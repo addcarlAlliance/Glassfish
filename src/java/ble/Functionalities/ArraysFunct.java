@@ -10,12 +10,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import ble.SyntaxAnalyzer.Data;
-import ble.entities.Entity;
+import ble.objects.Array2dBle;
+import ble.objects.ArrayAbstract;
 import ble.objects.ArrayBle;
+import ble.objects.ArrayInterface;
 
 /**
  *
- * @author Max
+ * @author Randell
  */
 public class ArraysFunct {
     private static String f;									//holder for the function call
@@ -145,7 +147,7 @@ public class ArraysFunct {
 				break;
 			case "delete":			
 				// parameters (1) ArrayName (2) Value
-				if(params.length == 2) {
+				if(params.length == 2 || params.length == 3) {
 					returnValue = (memory.containsKey(params[0])) ? delete(params,memory) : (String) "Array not found";
 				} else {
 					returnValue = (String) "Invalid Parameters";
@@ -210,24 +212,43 @@ public class ArraysFunct {
 		System.out.println("Searching . . . ");
                 int i;
 		int returnValue = -1;
-		Data<ArrayBle> data = (Data<ArrayBle>) memory.get(params[0]);
+		Data<ArrayAbstract> data = (Data<ArrayAbstract>) memory.get(params[0]);
+                Data<Object> x = new Data<>(false);
+                ArrayAbstract array = (ArrayAbstract) data.getValue();
 		if(data == null){
-                    data = new Data<ArrayBle>(false);
-                }
-                ArrayBle array = (ArrayBle) data.getValue();
-                if(array == null){
-                    array = new ArrayBle();
+                    data = new Data<ArrayAbstract>(false);
                 }
                 
-		Data<Object> x = (Data<Object>) memory.get(arrName);
-                if(x == null){
-                    x = new Data<>(false);
-                } 
-                if(!array.search(params[1]).equals(-1)){
-                    x.setValue("true");
-                }else{
-                    x.setValue("false");
+                if(array.getClass().isAssignableFrom(ArrayBle.class)){
+                    array = (ArrayBle) array;
+                    if(array == null){
+                        array = new ArrayBle();
+                    }
+                    x = (Data<Object>) memory.get(arrName);
+                    if(x == null){
+                        x = new Data<>(false);
+                    } 
+                    if(!array.search(params[1]).equals(-1)){
+                        x.setValue("true");
+                    }else{
+                        x.setValue("false");
+                    }
+                } else if (array.getClass().isAssignableFrom(Array2dBle.class)){
+                    array = (Array2dBle) array;
+                     if(array == null){
+                        array = new Array2dBle();
+                    }
+                    x = (Data<Object>) memory.get(arrName);
+                    if(x == null){
+                        x = new Data<>(false);
+                    } 
+                    if(!array.search(params[1]).equals(-1)){
+                        x.setValue("true");
+                    }else{
+                        x.setValue("false");
+                    }
                 }
+                
                 memory.put(arrName, x);
 		
 		return returnValue;
@@ -242,7 +263,7 @@ public class ArraysFunct {
 	 */
 	private static Integer size(String[] params, Map<String,?> memory) {
 		System.out.println("Getting Size . . . ");
-                ArrayBle array = (ArrayBle) memory.get(params[0]);
+                ArrayInterface array = (ArrayInterface) memory.get(params[0]);
 
 		return array.size();
 	}
@@ -255,25 +276,41 @@ public class ArraysFunct {
 	 */
 	private static Object delete(String[] params, Map<String,?> memory) {
 		System.out.println("Deleting . . .");
-                Object returnValue;
+                Object returnValue = null;
 		
                 System.out.println("Class: "+memory.get(params[0]).getClass().getSimpleName());
                 //if(memory.get(params[0]).getClass() == "ArrayBle"){
-                Data<ArrayBle> data = (Data<ArrayBle>) memory.get(params[0]);
-                if(data == null){
-                    data = new Data<ArrayBle>(false);
+                if(params.length == 2){
+                    Data<ArrayBle> data = (Data<ArrayBle>) memory.get(params[0]);
+                    if(data == null){
+                        data = new Data<ArrayBle>(false);
+                    }
+                    ArrayBle array = (ArrayBle) data.getValue();
+                    if(array == null){
+                        array = new ArrayBle();
+                    }
+
+                    if(array.isEmpty()) {
+                            returnValue = (String) "ERROR: -1 is not a valid index";
+                    } else {
+                            returnValue = array.delete(params[1]);
+                    }
+                } else if (params.length == 3) {
+                    Data<Array2dBle> data = (Data<Array2dBle>) memory.get(params[0]);
+                    if(data == null){
+                        data = new Data<Array2dBle>(false);
+                    }
+                    Array2dBle array = (Array2dBle) data.getValue();
+                    if(array == null){
+                        array = new Array2dBle();
+                    }
+
+                    if(array.isEmpty() || array.checkPosExists(params[1], params[2])) {
+                        returnValue = (String) "ERROR: -1 is not a valid index";
+                    } else {
+                        returnValue = array.deleteAtPos(params[1], params[2]);
+                    }
                 }
-                ArrayBle array = (ArrayBle) data.getValue();
-                if(array == null){
-                    array = new ArrayBle();
-                }
-		
-		if(array.isEmpty()) {
-			returnValue = (String) "ERROR: -1 is not a valid index";
-		} else {
-                        //returnValue = array.get(params[1]);
-			returnValue = array.delete(params[1]);
-		}
 		
 		return returnValue;
 	}
@@ -288,38 +325,48 @@ public class ArraysFunct {
 		System.out.println("Inserting . . . ");
                 String message = null;
 		
-                Data<ArrayBle> data = (Data<ArrayBle>) memory.get(params[0]);
-		if(data == null){
-                    data = new Data<ArrayBle>(false);
-                }
-                ArrayBle array = (ArrayBle) data.getValue();
-                if(array == null){
-                    array = new ArrayBle();
-                }   
+                Data<ArrayAbstract> data = (Data<ArrayAbstract>) memory.get(params[0]);
+                ArrayAbstract array = (ArrayAbstract)data.getValue();
                 
-                String key = Integer.toString(array.size());
-                Integer pos = array.size();
-		// TODO: check if the inserted value is a string, character, or number           
-		if(params.length == 2) {
-                    array.insert(key, params[1]);
-		} else if (params.length >= 3) {
-                    if(params.length == 4){ 
-                        //if(params[2].getClass().getName().equalsIgnoreCase("String")){
-                        //key = params[2];
-                        //pos = Integer.parseInt(params[3]);
-                    }else if(params.length == 3){
-                        //System.out.println("Type: "+params[2].getClass().getName());
+                if(data == null){
+                    data = new Data<ArrayAbstract>(false);
+                }
+                
+                if (array.getClass().isAssignableFrom(ArrayBle.class)) {
+                    array = (ArrayBle) data.getValue();
+                    if(array == null){
+                        array = new ArrayBle();
+                    }   
+
+                    String key = Integer.toString(array.size());
+                    Integer pos = array.size();
+                    if(params.length == 2) {
+                        array.insert(key, params[1]);
+                    } else if (params.length == 3) {
                         try {
                             pos = Integer.parseInt(params[2]);
                         } catch (NumberFormatException e) {
-                            //System.out.println("Wrong number");
                             key = params[2];
                         }
+                        array.insert(key, params[1], pos);
                     }
-                    array.insert(key, params[1], pos);
-		}
-		data.setValue(array);
-		memory.put(params[0], data);
+                } else if (array.getClass().isAssignableFrom(Array2dBle.class)) {
+                    array = (Array2dBle) data.getValue();
+                    if(array == null){
+                        array = new Array2dBle();
+                    }   
+
+                    String key = Integer.toString(array.size());
+                    Integer pos = array.size();
+                    if(params.length == 4) {
+                        array.insert(params[2], params[3], params[1]);
+                    }
+                }
+                
+                data.setValue(array);
+
+                memory.put(params[0], data);
+
 		return message;
 	}
 	
@@ -333,36 +380,36 @@ public class ArraysFunct {
 		System.out.println("Retrieving . . . ");
 		Object ret = null;
 		//ArrayBle array = (ArrayBle) memory.get(params[0]);
-		Data<ArrayBle> data = (Data<ArrayBle>) memory.get(params[0]);
-		if(data == null){
-                    data = new Data<ArrayBle>(false);
-                }
-                ArrayBle array = (ArrayBle) data.getValue();
-                if(array == null){
-                    array = new ArrayBle();
-                }
-                
+		Data<ArrayAbstract> data = (Data<ArrayAbstract>) memory.get(params[0]);
                 Data<Object> x = (Data<Object>) memory.get(arrName);
-                if(x == null){
+                 if(x == null){
                     x = new Data<>(false);
                 }
+                if(data == null){
+                    data = new Data<ArrayAbstract>(false);
+                }
                 
-                //Object y = (Object) x.getValue();
-                
-		if(params.length == 1) {
+                ArrayAbstract array = (ArrayAbstract) data.getValue();
+                if(array == null){
+                    array = new ArrayBle();
+                } else if(array.getClass().isAssignableFrom(ArrayBle.class)) {
+                    array = (ArrayBle) array;
+                    if(params.length == 1) {
 			System.out.println("retrieving first position");
 			ret = array.get(0);
-		} else if(params.length == 2) {
-			// TODO: Check if the second parameter is an integer
-			//System.out.println("retrieveing at "+params[1]+" position");
-			ret = array.get(params[1]);
-		} 
-                //System.out.println(arrName +" ret "+ret);
-
+                    } else if(params.length == 2) {
+                            ret = array.get(params[1]);
+                    } 
+                } else if(array.getClass().isAssignableFrom(Array2dBle.class)) {
+                    array = (Array2dBle) array;
+                    if(params.length == 3) {
+                        ret = array.getValueAt(params[1],params[2]);
+                    }
+                }
+                
                 x.setValue(ret);
-                //System.out.println("data "+x.getValue());
                 memory.put(arrName, x);
-		//System.out.println(arrName +" ret "+ret);
+                
 		return ret;
 	}
 }

@@ -8,7 +8,7 @@ import java.util.List;
  * @author Sean Cadigal
  * @version 0.1.0
  * @since January 11, 2018 */
-public class ArrayBle {
+public class ArrayBle extends ArrayAbstract {
 	private List<ArrayElement<?>> l;
 	
 	public ArrayBle() {
@@ -36,11 +36,17 @@ public class ArrayBle {
             
 		return (index < l.size()) ? l.get(index).getValue() : null;
 	}
+        
+        public Object getKeyAt (int index) {
+            
+		return (index < l.size()) ? l.get(index).getKey() : null;
+	}
 	
 	public boolean isEmpty() {
 		return l.isEmpty();
 	}
 	
+        @Override
 	public int size() {
 		return l.size();
 	}
@@ -70,6 +76,15 @@ public class ArrayBle {
 		}		
 		return ret;
 	}
+        
+        public Object deleteAt(Integer index) {
+		Object ret = "ERROR: value not found, array returned -1";
+		
+		if(index != -1) {
+                    ret = l.remove(index);
+		}		
+		return ret;
+	}
 	
 	public void insert(String key, Object value) {
 		ArrayElement<Object> e = new ArrayElement<>(key,value);
@@ -84,4 +99,16 @@ public class ArrayBle {
                 l.add(position, e);     
 	}
         
+        public boolean searchKeyExists(String key){
+            boolean ret;
+            ret = false;
+            
+            for(ArrayElement el : l){
+                if(el.getKey().equals(key)){
+                    return true;
+                }
+            }
+            
+            return ret;
+        }
 }

@@ -8,7 +8,7 @@ import java.nio.file.Paths;
 
 import javax.script.ScriptException;
 
-import ble.Functionalities.DataTypes;
+import ble.SyntaxAnalyzer.DataTypes;
 import ble.Functionalities.MainProcess;
 import ble.Network.Network;
 import ble.Network.Http.Server;
