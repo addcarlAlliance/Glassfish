@@ -78,9 +78,9 @@ public class Display {
 			}
 		}
                 
-                                    this.htmlCode = this.htmlCode.replaceAll("<@BLE","");
-                                    this.htmlCode = this.htmlCode.replaceAll("@>", "");
-                                    this.htmlCode = this.htmlCode.replaceAll("(?<=(<@BLE))(\\w|\\d|\\n|[().,\\-:;@#$%^&*\\[\\]\"'+–/\\/®°°!?{}|`~=]|\\t|\\s)+?(?=(@>))", "");
+        this.htmlCode = this.htmlCode.replaceAll("<@BLE","");
+        this.htmlCode = this.htmlCode.replaceAll("@>", "");
+        this.htmlCode = this.htmlCode.replaceAll("(?<=(<@BLE))(\\w|\\d|\\n|[().,\\-:;@#$%^&*\\[\\]\"'+–/\\/®°°!?{}|`~=]|\\t|\\s)+?(?=(@>))", "");
 		
-	}
+    }
 }

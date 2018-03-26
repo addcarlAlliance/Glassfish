@@ -54,14 +54,14 @@ public class BleDriver {
                 String line = lines1[i1];
                 if(!line.trim().equals("")) {
                     resultGet.add(line);
-                    System.out.println("Line :"+line);
+                 //   System.out.println("Line :"+line);
                     //resultGet.add(line);
                     status = MainProcess.process(lines1, i1, data);
                 }
             }
             
            // System.out.println("RESULT" + result);
-            results = resultGet.toArray(new String[0]);            
+            results = resultGet.toArray(new String[0]);         
           //  System.out.println("***BLECODE"+bleCode);
             ImbedHtml injectResult = new ImbedHtml(bleCode, results); // from ble to  html code 
       //      Server server = new Server();
