@@ -48,6 +48,7 @@ public class IndexController extends HttpServlet {
         List<String> lines;
         String path;
         String currline;
+        String allLines;
         
         context = request.getServletContext();
         path = request.getRequestURI().substring(request.getContextPath().length());
@@ -68,8 +69,11 @@ public class IndexController extends HttpServlet {
                 lines = new ArrayList<>();
                 while ((currline = bf.readLine()) != null) {
                     lines.add(currline);
-                    out.println(currline);
+                  //  out.println(currline);
                 }
+                
+                allLines = String.join("", lines);
+                
             }
         } else {
             PrintWriter out = response.getWriter();

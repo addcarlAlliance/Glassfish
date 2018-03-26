@@ -30,9 +30,13 @@ public class BleDriver {
     private static final File CONSTANT_FOLDER = new File("bledocs/");
     private static final File[] CONSTANT_LISTOFFILES = CONSTANT_FOLDER.listFiles();
     
+    public static void run() {
+    
+        
+    }
     
     
-    public static void main(String[] args) throws IOException, ScriptException, Exception {
+  /*  public static void main(String[] args) throws IOException, ScriptException, Exception {
         BleDriver driver = new BleDriver();
         
         Server server = null;
@@ -103,12 +107,8 @@ public class BleDriver {
                     Server.server(null);
                     ctr++;
                 }
-        } */
-    }
-    
-    public BleDriver() {
-        this.network = new Network();
-    }
+        } 
+    } */
     
     public Network network() {
         return this.network;
