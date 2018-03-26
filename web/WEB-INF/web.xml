@@ -7,15 +7,46 @@
         <servlet-name>SServlet</servlet-name>
         <servlet-class>SServlet</servlet-class>
     </servlet>
- 
     <servlet>
         <servlet-name>IndexController</servlet-name>
         <servlet-class>ble.Servlet.IndexController</servlet-class>
     </servlet>
- 
+    <servlet>
+        <servlet-name>Login</servlet-name>
+        <servlet-class>ble.Servlet.Login</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Authentication</servlet-name>
+        <servlet-class>ble.Servlet.Authentication</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Logout</servlet-name>
+        <servlet-class>ble.Servlet.Logout</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>NewServlet</servlet-name>
+        <servlet-class>ble.Servlet.NewServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>IndexController</servlet-name>
         <url-pattern>/([A-Za-z|0-9])*\.(html|ble)</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>/Login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Authentication</servlet-name>
+        <url-pattern>/Authentication</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Logout</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>NewServlet</servlet-name>
+        <url-pattern>/NewServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

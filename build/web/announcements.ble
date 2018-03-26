@@ -12,10 +12,10 @@
       <div class="row">
           <div class="col col-md-offset-1 col-md-6">
             <h1>
-              Announcements
+              Announcements for Students
             </h1>
           </div>
-            <a type = "button" class="btn btn-cancel logoutBtn" href="index.ble">Sign out</a>
+           <a href="Logout">Logout</a> 
          </div>
       </div>
 
