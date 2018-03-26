@@ -38,12 +38,12 @@ public class MainProcess {
         
         p = Pattern.compile(DATATYPES);
         m = p.matcher(line[idx]);
-        if(m.find()){
+
+        if(m.find()) {
             DataTypes dTypes = new DataTypes(); 
             DataTypes.storeVar(line[idx]);
             System.out.println("DECLARED MAYBE");
             DataTypes.printAllVars(); 
-        
         }
         
         p = Pattern.compile(REPEAT);
@@ -51,7 +51,7 @@ public class MainProcess {
 
         if(m.find()) {
             Loops.repeat(line[idx], line, idx);
-        }else if (!m.find()){
+        } else if (!m.find()){
             System.out.println("Syntax Error on repeat loop function");
         }
 

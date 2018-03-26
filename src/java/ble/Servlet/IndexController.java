@@ -1,21 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ble.Servlet;
 
+import ble.BleDriver;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.nio.file.Files;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletContext;
@@ -55,7 +45,7 @@ public class IndexController extends HttpServlet {
         
         System.out.println(path);
        
-        if(path.equals("/")) {
+        if(path.equals("/") || path.equals("/Login")) {
             path = "/index.ble";
         }
         
@@ -69,12 +59,14 @@ public class IndexController extends HttpServlet {
                 lines = new ArrayList<>();
                 while ((currline = bf.readLine()) != null) {
                     lines.add(currline);
-                  //  out.println(currline);
+
                 }
-                
-                allLines = String.join("", lines);
-                
+             
+                allLines = String.join("\n", lines);
+                out.println(allLines);
+                BleDriver.drive();
             }
+            
         } else {
             PrintWriter out = response.getWriter();
             out.println("404 Page not found");

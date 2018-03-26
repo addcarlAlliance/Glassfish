@@ -15,6 +15,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import ble.Servlet.Sessions;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  *
  * @author shellygobui
@@ -67,22 +74,51 @@ public class Login extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String uname = request.getParameter("uname");
-        String pass = request.getParameter("pass");
-        Sessions sess = new Sessions();
-                if((uname.equalsIgnoreCase("stud") && pass.equalsIgnoreCase("stud")) || (uname.equalsIgnoreCase("teacher") && pass.equalsIgnoreCase("teacher"))){
-                    HttpSession session =request.getSession(); //this is setsession
-                    session.setAttribute("user", uname); //this is setsession
-                    /*something wrong with calling a function:
-                    /sess.setSession(request, response, "user", uname);*/
-                    RequestDispatcher rd = request.getRequestDispatcher("Authentication");
-                    rd.forward(request, response);
-                }else{
-                    RequestDispatcher rd =request.getRequestDispatcher("index.ble");
-                    rd.include(request, response);
-                }
+            throws ServletException, IOException  {
+        
+        try {
+            
+            response.setContentType("text/html;charset=UTF-8");
+            String uname = request.getParameter("uname");
+            String pass = request.getParameter("pass");
+            Sessions sess = new Sessions();
+            Statement stmt;
+            
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            Connection conn;
+            String sql;
+            ResultSet rs = null;
+            
+            try {
+                conn = DriverManager.getConnection("jdbc:mysql://localhost/ble", "root", "");
+                stmt = conn.createStatement();
+                //    sql = "SELECT * FROM users WHERE idNumber = '" + uname + "' AND password IS "
+                rs = stmt.executeQuery("SELECT * FROM users WHERE idNumber = '" + uname + "' AND password = '" + pass + "'");
+            } catch (SQLException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+            if(rs != null && rs.next()) {
+                //if((uname.equalsIgnoreCase("stud") && pass.equalsIgnoreCase("stud")) || (uname.equalsIgnoreCase("teacher") && pass.equalsIgnoreCase("teacher"))){
+                HttpSession session =request.getSession(); //this is setsession
+                rs.first();
+                session.setAttribute("user", rs.getString("userType")); //this is setsession
+
+                /*something wrong with calling a function:
+                /sess.setSession(request, response, "user", uname);*/
+                RequestDispatcher rd = request.getRequestDispatcher("Authentication");
+                rd.forward(request, response);
+            }else{
+                RequestDispatcher rd =request.getRequestDispatcher("index.ble");
+                rd.include(request, response);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

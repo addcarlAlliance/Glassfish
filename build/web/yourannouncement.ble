@@ -13,7 +13,7 @@
 			      Your Announcements
 			    </h1>
 			  </div>
-			 <a type = "button" class="btn btn-cancel logoutBtn" href="index.ble">Sign out</a>
+			 <a type = "button" class="btn btn-cancel logoutBtn" href="Logout">Sign out</a>
 			  <div class="col col-md-offset-1 col-md-6">
 			      <button class = "btn btn-default" onClick ="redirPostNew()"> Post new announcement </button>
 			  </div>

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.*;
 
 public class DataTypes<T> {
-     public static Map<String, Data> vars = new HashMap<String, Data>();     
+    public static Map<String, Data> vars = new HashMap<String, Data>();     
     
     public static void storeVar(String toCheck) throws IOException
     {

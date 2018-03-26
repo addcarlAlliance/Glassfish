@@ -27,11 +27,22 @@
         <servlet-name>NewServlet</servlet-name>
         <servlet-class>ble.Servlet.NewServlet</servlet-class>
     </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>IndexController</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>IndexController</servlet-name>
-        <url-pattern>/([A-Za-z|0-9])*\.(html|ble)</url-pattern>
+        <url-pattern>*.ble</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+        <servlet-name>IndexController</servlet-name>
+        <url-pattern>*.html</url-pattern>
+    </servlet-mapping>
+    
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
@@ -48,6 +59,7 @@
         <servlet-name>NewServlet</servlet-name>
         <url-pattern>/NewServlet</url-pattern>
     </servlet-mapping>
+    
     <session-config>
         <session-timeout>
             30

@@ -7,6 +7,11 @@ package ble.Servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -19,7 +24,6 @@ import javax.servlet.http.HttpSession;
  * @author shellygobui
  */
 public class Authentication extends HttpServlet {
-
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -33,21 +37,22 @@ public class Authentication extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         Sessions sess = new Sessions();
+        
         try (PrintWriter out = response.getWriter()) {
             String val = sess.getSession(request, response, "user");
             //HttpSession session = request.getSession(false);
             if(val != null){
-                if("stud".equals(val)){
+                if("student".equals(val)){
                     //out.print(val);
-                    RequestDispatcher rd = request.getRequestDispatcher("announcements.ble");
+                    RequestDispatcher rd = request.getRequestDispatcher("/announcements.ble");
                     rd.forward(request, response);
                 }else if("teacher".equals(val)){
                    //out.print(val);
-                    RequestDispatcher rd = request.getRequestDispatcher("yourannouncement.ble");
+                    RequestDispatcher rd = request.getRequestDispatcher("/yourannouncement.ble");
                     rd.forward(request, response);
                 }
-            }else{
-                RequestDispatcher rd = request.getRequestDispatcher("index.ble");
+            } else {
+                RequestDispatcher rd = request.getRequestDispatcher("/index.ble");
                 rd.forward(request, response);
             }
         }

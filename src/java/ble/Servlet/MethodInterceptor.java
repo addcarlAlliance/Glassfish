@@ -5,12 +5,14 @@
  */
 package ble.Servlet;
 
+import ble.SyntaxAnalyzer.Data;
 import ble.SyntaxAnalyzer.DataTypes;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Enumeration;
+import java.util.HashMap;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author Sean Cadigal
  */
+
 @WebFilter(filterName = "MethodInterceptor", urlPatterns = {"/*"})
 public class MethodInterceptor implements Filter {
     
@@ -41,10 +44,11 @@ public class MethodInterceptor implements Filter {
             throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         
+        DataTypes.vars = new HashMap<String, Data>();
+        
         if (debug) {
             log("MethodInterceptor:DoBeforeProcessing");
         }
-        
 
         Enumeration<String> names = request.getParameterNames();
         while(names.hasMoreElements()) {
@@ -68,15 +72,7 @@ public class MethodInterceptor implements Filter {
         }
     }
 
-    /**
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
-     */
+
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
             throws IOException, ServletException {
@@ -107,31 +103,19 @@ public class MethodInterceptor implements Filter {
         }
     }
 
-    /**
-     * Return the filter configuration object for this filter.
-     */
+
     public FilterConfig getFilterConfig() {
         return (this.filterConfig);
     }
 
-    /**
-     * Set the filter configuration object for this filter.
-     *
-     * @param filterConfig The filter configuration object
-     */
     public void setFilterConfig(FilterConfig filterConfig) {
         this.filterConfig = filterConfig;
     }
 
-    /**
-     * Destroy method for this filter
-     */
     public void destroy() {        
     }
 
-    /**
-     * Init method for this filter
-     */
+
     public void init(FilterConfig filterConfig) {        
         this.filterConfig = filterConfig;
         if (filterConfig != null) {
@@ -141,9 +125,7 @@ public class MethodInterceptor implements Filter {
         }
     }
 
-    /**
-     * Return a String representation of this object.
-     */
+
     @Override
     public String toString() {
         if (filterConfig == null) {
@@ -158,7 +140,7 @@ public class MethodInterceptor implements Filter {
     private void sendProcessingError(Throwable t, ServletResponse response) {
         String stackTrace = getStackTrace(t);        
         
-        if (stackTrace != null && !stackTrace.equals("")) {
+       if (stackTrace != null && !stackTrace.equals("")) {
             try {
                 response.setContentType("text/html");
                 PrintStream ps = new PrintStream(response.getOutputStream());

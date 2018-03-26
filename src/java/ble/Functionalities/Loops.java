@@ -47,8 +47,7 @@ public class Loops {
                 n = Integer.parseInt(m.group());
               
                 while(n-- > 0) {
-                    if(lines.length > idx + 1){
-                        //automatically assusmes the next line as within it's scope due to tab detection
+                    if(lines.length > idx + 1) {
                         System.out.println("loop works! but with a problem cannot detect tab from next line due to all the lines had all their spaces removed");
                     }
                 }

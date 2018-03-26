@@ -60,14 +60,15 @@ public class Logout extends HttpServlet {
        response.setContentType("text/html");  
             PrintWriter out=response.getWriter();  
               
-            request.getRequestDispatcher("index.ble").include(request, response);  
-              
+            request.getRequestDispatcher("/index.ble").forward(request, response);
+                          
             HttpSession session=request.getSession();  
             session.invalidate();  
               
             //out.print("You are successfully logged out!");  
               
-            out.close();  
+            out.close();
+            response.sendRedirect("/index.ble");
     }
 
     /**
