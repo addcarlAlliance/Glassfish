@@ -107,6 +107,7 @@ public class Login extends HttpServlet {
                 HttpSession session =request.getSession(); //this is setsession
                 rs.first();
                 session.setAttribute("user", rs.getString("userType")); //this is setsession
+                session.setAttribute("id", rs.getString("id"));
 
                 /*something wrong with calling a function:
                 /sess.setSession(request, response, "user", uname);*/

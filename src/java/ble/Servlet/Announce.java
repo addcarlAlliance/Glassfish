@@ -17,26 +17,24 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Max
  */
-public class Register extends HttpServlet {
+public class Announce  extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         
         try {
+            Sessions sess = new Sessions();
             
             response.setContentType("text/html;charset=UTF-8");
-            String uname = request.getParameter("id");
-            String name = request.getParameter("name");
-            String type = request.getParameter("designation");
-            String course = request.getParameter("course");
-            String pass = request.getParameter("password");
+            String ann = request.getParameter("ann");
+            String type = request.getParameter("stat");
+            String id = sess.getSession(request, response, "id");
             Statement stmt;
             
             Class.forName("com.mysql.jdbc.Driver");
@@ -44,14 +42,15 @@ public class Register extends HttpServlet {
 
             conn = DriverManager.getConnection("jdbc:mysql://localhost/ble", "root", "");
             stmt = conn.createStatement();
-            stmt.executeUpdate("INSERT INTO users VALUES(null, '"+uname+"', '"+pass+"', '"+name+"', '"+course+"', '"+type+"')");
+            stmt.executeUpdate("INSERT INTO announcements VALUES(null, '"+id+"', '"+ann+"', 'open', '"+type+"')");
             
-            RequestDispatcher rd =request.getRequestDispatcher("index.ble");
-            rd.include(request, response);
+            conn.close();
+            RequestDispatcher rd = request.getRequestDispatcher("/yourannouncement.ble");
+            rd.forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Register.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    } 
 }
