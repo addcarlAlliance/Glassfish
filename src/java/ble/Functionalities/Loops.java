@@ -1,6 +1,9 @@
 package ble.Functionalities;
 
+import ble.SyntaxAnalyzer.Data;
+import ble.SyntaxAnalyzer.DataTypes;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.CONDITION;
+import ble.objects.Array2dBle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.script.ScriptEngine;
@@ -65,11 +68,26 @@ public class Loops {
             if(m.find()){
                 
                 n = Integer.parseInt(m.group());
-              
+                
                 while(n-- > 0) {
                     // TODO: Make this work for 2DArrays
                     if(lines.length > idx + 1) {
                         System.out.println("loop works! but with a problem cannot detect tab from next line due to all the lines had all their spaces removed");
+                    }
+                }
+            } else {
+                
+                // This is where we loop arrays
+                p = Pattern.compile("\\(.*\\)");
+                m = p.matcher(line);
+                if(m.find()){
+                    String arrayName = m.group();
+                    arrayName = arrayName.replaceAll("\\(|\\)", "");
+                    Data<Array2dBle> var = (Data<Array2dBle>)DataTypes.vars.get(arrayName);
+                    Array2dBle arr = var.getValue();
+                    n = arr.size();
+                    while(n-- > 0){
+                        
                     }
                 }
             }

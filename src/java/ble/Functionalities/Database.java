@@ -25,7 +25,7 @@ import java.sql.Types;
 public class Database {
 	
 	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://localhost/compilerdb";
+	static final String DB_URL = "jdbc:mysql://localhost/ble";
 	
 	
 	static final String USER = "root";
