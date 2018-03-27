@@ -9,13 +9,18 @@ package ble.Functionalities;
  *
  * @author Max
  */
+import ble.SyntaxAnalyzer.DataTypes;
+import ble.SyntaxAnalyzer.Data;
+import ble.objects.Array2dBle;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 
 public class Database {
 	
@@ -255,12 +260,29 @@ public class Database {
 						System.out.println(sql);
 						ResultSet rs = stmt.executeQuery(sql);
 						System.out.println("Retrieved records from table");
-						while (rs.next()) {
-							for (int i = 0; i < tableColumns.length; i++) {
-								String retrievedData = rs.getString(tableColumns[i]);
-								System.out.println(tableColumns[i] + retrievedData);
-							}
+                                                /** Conversion**/
+                                                ResultSetMetaData rsmd = rs.getMetaData();
+                                                Array2dBle converted = new Array2dBle();
+						int row = 0;
+                                                while (rs.next()) {   
+                                                    for (int j = 0; j < tableColumns.length; j++) {
+                                                        String colName = rsmd.getColumnName(j);
+                                                        int type = rsmd.getColumnType(j);
+                                                        Object dt = null;
+                                                        if(type == Types.VARCHAR || type == Types.CHAR){
+                                                            dt = (String)rs.getString(colName);
+                                                        } else if (type == Types.INTEGER) {
+                                                            dt = (Integer)rs.getInt(colName);
+                                                        } 
+                                                        converted.insert(Integer.toString(row), colName, dt);
+                                                            //String retrievedData = rs.getString(tableColumns[i]);
+                                                            //System.out.println(tableColumns[i] + retrievedData);
+                                                    }
+                                                    row++;
 						}
+                                                Data <Array2dBle> data = new Data<Array2dBle>();
+                                                data.setValue(converted);
+                                                DataTypes.vars.put(tableName, data);
 						conn.close();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
