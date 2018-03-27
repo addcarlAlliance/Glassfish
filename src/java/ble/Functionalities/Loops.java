@@ -6,7 +6,6 @@ import java.util.regex.Pattern;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import ble.Functionalities.MainProcess;
 import java.io.IOException;
 
 /**
@@ -22,21 +21,42 @@ public class Loops {
     static int n;
     
 
-    static void repeat(String line, String[] lines, int idx) throws ScriptException, IOException {
+    static int repeat(String line, String[] lines, int idx) throws ScriptException, IOException {
         
+        int newNdx = idx + 1;
+        int lastNdx;
+        int tabs, checkTabs;
         ble.SyntaxAnalyzer.DataTypes data = new ble.SyntaxAnalyzer.DataTypes();
         p = Pattern.compile(CONDITION);
         m = p.matcher(line);
         line = line.split("\\(")[1];
         line = line.split("\\)")[0];
+        
+        String fakeLine = line;
+        for(tabs = 0; fakeLine.contains("\t"); tabs++) {
+            fakeLine = fakeLine.replaceFirst("\t", "");
+        }
+            
+        tabs++;
+        
         if(m.find()) {
             sem = new ScriptEngineManager();
             se = sem.getEngineByName("js");
             obj = se.eval(line);
+           
+            fakeLine = lines[newNdx];
+            lastNdx = newNdx;
+            for(checkTabs = 0; lines.length < newNdx && fakeLine.contains("\t"); checkTabs++) {
+                fakeLine = fakeLine.replaceFirst("\t", "");
+                if(checkTabs == tabs) {
+                    lastNdx++;
+                    fakeLine = lines[lastNdx];
+                }
+            }
             
             while(obj.toString().equals("true")) {
-                if(lines.length > idx + 1){
-                    System.out.println(lines[idx+1]);
+                for(idx = newNdx; idx <= lastNdx; idx++) {
+                    MainProcess.process(lines, idx, data);
                 }
             }
         } else {
@@ -47,12 +67,15 @@ public class Loops {
                 n = Integer.parseInt(m.group());
               
                 while(n-- > 0) {
+                    // TODO: Make this work for 2DArrays
                     if(lines.length > idx + 1) {
                         System.out.println("loop works! but with a problem cannot detect tab from next line due to all the lines had all their spaces removed");
                     }
                 }
             }
         }
+        
+        return newNdx;
     }
     
     static void forLoop(String line) {
