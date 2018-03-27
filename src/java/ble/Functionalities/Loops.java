@@ -92,6 +92,7 @@ public class Loops {
                     n = arr.size();
                     List<String> results = new ArrayList();
                     String wholearray ="";
+
                     while(n-- > 0){
                         
                         int u = -1;

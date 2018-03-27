@@ -21,7 +21,9 @@
       <div style="padding-top: 50px;">
       <div class="row">
         <div class="col col-md-offset-1 col-md-5">
-          <form method="POST">
+
+          <form method="POST" action="Subscribe">
+          
             <div class="form-check">
               <input class="form-check-input checkboxIn" type="checkbox" value="" id="defaultCheck1">
               <label class="form-check-label" for="defaultCheck1">
@@ -53,6 +55,7 @@
               </label>
             </div>
           </form>
+
           <br>
           <button type = "button" class="btn btn-default">Save</button>
           <button type = "button" class="btn btn-cancel">Cancel</button>
