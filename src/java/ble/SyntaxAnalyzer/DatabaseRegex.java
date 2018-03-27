@@ -13,8 +13,8 @@ public class DatabaseRegex {
                 "\\(\\s*\\w+\\s*\\)";
        
         syntax += "|let\\s+\\w+\\s+=\\s+" +
-                "(retrieveRows|updateRows)" +
-                "\\(\\s*\\w+\\s*,\\s*\\w+\\s*\\)";
+                "(retrieveRows)" +
+                "\\(\\s*\\w+\\s*\\)";
 		
         syntax += "|let\\s+\\w+\\s+=\\s+" +
                 "(deleteRows)" +

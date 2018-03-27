@@ -41,6 +41,7 @@ public class IndexController extends HttpServlet {
         String path;
         String currline;
         String allLines;
+        Sessions sess = new Sessions();
         
         context = request.getServletContext();
         path = request.getRequestURI().substring(request.getContextPath().length());
@@ -64,8 +65,9 @@ public class IndexController extends HttpServlet {
 
                 }
              
+                String id = sess.getSession(request, response, "id");
                 allLines = String.join("\n", lines);
-                allLines = BleDriver.drive(allLines);
+                allLines = BleDriver.drive(allLines, path,id);
                 out.println(allLines);
             }
             

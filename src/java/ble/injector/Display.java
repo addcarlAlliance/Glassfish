@@ -84,8 +84,8 @@ public class Display {
 		
     }
         
-    public void Repeat(){
-        		Pattern pattern = Pattern.compile(Display.EXTRACT_TAG);
+    public String Repeat() {
+                Pattern pattern = Pattern.compile(Display.EXTRACT_TAG);
 		Matcher matcher = pattern.matcher(this.htmlCode);
 		
 		ArrayList<String> contents = new ArrayList<>();
@@ -123,6 +123,8 @@ public class Display {
         this.htmlCode = this.htmlCode.replaceAll("<@BLE","");
         this.htmlCode = this.htmlCode.replaceAll("@>", "");
         this.htmlCode = this.htmlCode.replaceAll("(?<=(<@BLE))(\\w|\\d|\\n|[().,\\-:;@#$%^&*\\[\\]\"'+–/\\/®°°!?{}|`~=]|\\t|\\s)+?(?=(@>))", "");
-	
+        
+        return this.htmlCode;
+    
     }
 }

@@ -1,8 +1,10 @@
 package ble.injector;
 
 import ble.Functionalities.Display;
+import ble.Functionalities.Loops;
 import ble.SyntaxAnalyzer.DataTypes;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.DISPLAY;
+import static ble.SyntaxAnalyzer.SyntaxAnalyzer.REPEAT;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +20,8 @@ public class ImbedHtml {
 	//Catches BLE tags...
 	private static final String EXTRACTTAG = "(\\<@BLE)([^\\<\\@BLE\\@\\>]*)(@\\>)";
 	
+        public ImbedHtml(){}
+        
 	public ImbedHtml(String htmlCode, String[] results){
 		//sample input...
 		this.htmlCode = htmlCode;
@@ -41,7 +45,7 @@ public class ImbedHtml {
 		this.results = results;
 	}
 	
-	public void imbedResults(){
+	public String imbedResults(String replace){
 		Pattern pattern = Pattern.compile(ImbedHtml.EXTRACTTAG);
 		Matcher matcher = pattern.matcher(this.htmlCode);
 		
@@ -90,17 +94,25 @@ public class ImbedHtml {
                     
                     
                     start = this.htmlCode.substring(end).indexOf("@>");
+                    
                     if(start > -1){ // if ble fragments are found
                         start += end + 2; 
                         
                         System.out.println("END :: " + this.htmlCode.substring(end, start));
                         
                         bleFrag = this.htmlCode.substring(end + 5, start -2);
+                        System.out.println("BLEFRAG" + bleFrag);
                         for(String c : bleFrag.split("\n")){  //search for display one by one
-                           // System.out.println("cccc" + c);
+                            System.out.println("cccc" + c);
                             if(c.matches(DISPLAY)){ // if display statement
-                              System.out.println("inside" + c);
-                                fromDisp.run(c); // store in contents
+                             // System.out.println("inside" + c);
+                                Display.run(c); // store in contents
+                            }else if(c.contains("repeat(announcements)")){
+                                System.out.println("I am inside you");
+                                if(!newHtml.contains(replace)) {
+                                    newHtml += replace;
+                                }
+                                
                             }
                         }
                         newHtml += fromDisp.getDisplayedContents(); 
@@ -119,6 +131,8 @@ public class ImbedHtml {
                 
                
                 this.htmlCode = newHtml; 
+                
+                return this.htmlCode;
                 /*DataTypes dt = new DataTypes(); 
                  // removes all non related bleCOde
                 this.htmlCode = this.htmlCode.replaceAll(DISPLAY, "IDKKK VALUE");
@@ -127,6 +141,6 @@ public class ImbedHtml {
 		this.htmlCode = this.htmlCode.replaceAll("<@BLE","");
 		this.htmlCode = this.htmlCode.replaceAll("@>", "");
                 */
-                System.out.println("FROM IMBEDRESULTS CONSTRUCTOR HTMLCODE" + this.htmlCode);
+               // System.out.println("FROM IMBEDRESULTS CONSTRUCTOR HTMLCODE" + this.htmlCode);
 	}
 }

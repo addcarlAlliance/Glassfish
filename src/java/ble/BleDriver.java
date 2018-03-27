@@ -33,16 +33,19 @@ public class BleDriver {
     private static final File CONSTANT_FOLDER = new File("bledocs/");
     private static final File[] CONSTANT_LISTOFFILES = CONSTANT_FOLDER.listFiles();
     
-    public static String drive(String bleCode) throws Exception {
+    public static String drive(String bleCode, String path, String id) throws Exception {
         
         SyntaxAnalyzer syn = new SyntaxAnalyzer();
         System.out.println("...Preparing files for browser upload");
 //        bleCode = new String(Files.readAllBytes(Paths.get("bledocs/"+file.getName())), StandardCharsets.UTF_8);
         ArrayList<String> resultGet = new ArrayList<>();
         String[] results;
-        String status;
+        String status = "";
         ble.SyntaxAnalyzer.DataTypes data = new DataTypes();
         String result = extractor.extractBle(bleCode);
+        ImbedHtml injectResult = new ImbedHtml();
+        
+        injectResult.setHtmlCode(bleCode);
                     
         System.out.println("result" + result);
 
@@ -56,16 +59,20 @@ public class BleDriver {
                     resultGet.add(line);
                  //   System.out.println("Line :"+line);
                     //resultGet.add(line);
-                    i1 = MainProcess.process(lines1, i1, data);
+                    status = MainProcess.process(lines1, i1, data, bleCode, path, id);
                 }
             }
             
            // System.out.println("RESULT" + result);
-            results = resultGet.toArray(new String[0]);         
+            
+            results = resultGet.toArray(new String[0]);
           //  System.out.println("***BLECODE"+bleCode);
-            ImbedHtml injectResult = new ImbedHtml(bleCode, results); // from ble to  html code 
+            
+            injectResult.setResults(results); // from ble to  html code 
       //      Server server = new Server();
-            injectResult.imbedResults();
+            injectResult.setHtmlCode(bleCode);
+            injectResult.imbedResults(status);
+            
             
             return injectResult.getHtmlCode();
        //     server.setContext(file.getName());

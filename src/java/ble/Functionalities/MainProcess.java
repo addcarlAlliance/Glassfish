@@ -15,6 +15,7 @@ import static ble.SyntaxAnalyzer.SyntaxAnalyzer.REPEAT;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.TIME_LIB;
 import static ble.SyntaxAnalyzer.SyntaxAnalyzer.VALIDATION;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Queue;
 import java.util.Stack;
 import java.util.regex.Matcher;
@@ -31,7 +32,7 @@ public class MainProcess {
     static Queue<Integer> qu;
     static Stack<Integer> st;
     
-    public static int process(String[] line, int idx, ble.SyntaxAnalyzer.DataTypes data) throws ScriptException, IOException {
+    public static String process(String[] line, int idx, ble.SyntaxAnalyzer.DataTypes data, String bleCode, String path, String id) throws ScriptException, IOException, ClassNotFoundException, SQLException {
         String status;
 
         status = "Ok";
@@ -50,7 +51,7 @@ public class MainProcess {
         m = p.matcher(line[idx]);
 
         if(m.find()) {
-            idx = Loops.repeat(line[idx], line, idx);
+            bleCode = Loops.repeat(line[idx], line, idx, bleCode, path, id);
         } else if (!m.find()){
             System.out.println("Syntax Error on repeat loop function");
         }
@@ -150,7 +151,7 @@ public class MainProcess {
             Fetch.fetchExecute(line[idx]);
         }
         
-        return idx;
+        return bleCode;
     }       
     
     public static String customDataType(String code) throws Exception{

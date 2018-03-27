@@ -46,8 +46,8 @@ public class Register extends HttpServlet {
             stmt = conn.createStatement();
             stmt.executeUpdate("INSERT INTO users VALUES(null, '"+uname+"', '"+pass+"', '"+name+"', '"+course+"', '"+type+"')");
             
-            RequestDispatcher rd =request.getRequestDispatcher("index.ble");
-            rd.include(request, response);
+            RequestDispatcher rd = request.getRequestDispatcher("/index.ble");
+            rd.forward(request, response);
         } catch (SQLException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {

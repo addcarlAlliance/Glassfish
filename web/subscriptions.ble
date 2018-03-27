@@ -23,7 +23,7 @@
         <div class="col col-md-offset-1 col-md-5">
 
           <form method="POST" action="Subscribe">
-          
+            
             <div class="form-check">
               <input class="form-check-input checkboxIn" type="checkbox" value="" id="defaultCheck1">
               <label class="form-check-label" for="defaultCheck1">

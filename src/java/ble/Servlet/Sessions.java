@@ -19,9 +19,13 @@ public class Sessions {
 
     public String getSession(HttpServletRequest request, HttpServletResponse response, String var)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
+      //  response.setContentType("text/html;charset=UTF-8");
         HttpSession session = request.getSession(false);
+        if(session!=null){
         return session.getAttribute(var).toString();
+        } else {
+            return null;
+        }
     }
     public void removeSession(HttpServletRequest request, HttpServletResponse response, String var)
             throws ServletException, IOException {
