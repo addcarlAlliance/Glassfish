@@ -118,6 +118,7 @@ public class Loops {
 
                     results.add(wholearray);
                     ble.injector.Display postHtml = new ble.injector.Display("here", (String[]) results.toArray());
+                    postHtml.Repeat();
                 }
             }
         }
