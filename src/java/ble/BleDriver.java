@@ -56,7 +56,7 @@ public class BleDriver {
                     resultGet.add(line);
                  //   System.out.println("Line :"+line);
                     //resultGet.add(line);
-                    status = MainProcess.process(lines1, i1, data);
+                    i1 = MainProcess.process(lines1, i1, data);
                 }
             }
             

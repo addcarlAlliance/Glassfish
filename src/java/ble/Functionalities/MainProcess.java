@@ -31,7 +31,7 @@ public class MainProcess {
     static Queue<Integer> qu;
     static Stack<Integer> st;
     
-    public static String process(String[] line, int idx, ble.SyntaxAnalyzer.DataTypes data) throws ScriptException, IOException {
+    public static int process(String[] line, int idx, ble.SyntaxAnalyzer.DataTypes data) throws ScriptException, IOException {
         String status;
 
         status = "Ok";
@@ -50,7 +50,7 @@ public class MainProcess {
         m = p.matcher(line[idx]);
 
         if(m.find()) {
-            Loops.repeat(line[idx], line, idx);
+            idx = Loops.repeat(line[idx], line, idx);
         } else if (!m.find()){
             System.out.println("Syntax Error on repeat loop function");
         }
@@ -150,7 +150,7 @@ public class MainProcess {
             Fetch.fetchExecute(line[idx]);
         }
         
-        return status;
+        return idx;
     }       
     
     public static String customDataType(String code) throws Exception{

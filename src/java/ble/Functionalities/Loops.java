@@ -24,7 +24,7 @@ public class Loops {
     static int repeat(String line, String[] lines, int idx) throws ScriptException, IOException {
         
         int newNdx = idx + 1;
-        int lastNdx;
+        int lastNdx = newNdx;
         int tabs, checkTabs;
         ble.SyntaxAnalyzer.DataTypes data = new ble.SyntaxAnalyzer.DataTypes();
         p = Pattern.compile(CONDITION);
@@ -75,7 +75,7 @@ public class Loops {
             }
         }
         
-        return newNdx;
+        return lastNdx;
     }
     
     static void forLoop(String line) {
