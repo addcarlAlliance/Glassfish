@@ -54,7 +54,7 @@ public class Display {
 		ArrayList<String> clone = (ArrayList<String>) contents.clone();
 		ArrayList<String> filter = new ArrayList<>();
 		
-                                    Pattern catchDisplay = Pattern.compile(Display.DISPLAY_TAG);
+                Pattern catchDisplay = Pattern.compile(Display.DISPLAY_TAG);
 		for(int x = 0; x < clone.size(); x++){
                                         Matcher matchDisplay = catchDisplay.matcher(clone.get(x));
                                         while(matchDisplay.find()){
@@ -65,7 +65,7 @@ public class Display {
 		}
 		
 		for(int x = 0; x < filter.size(); x++){
-                                                      String temp = filter.get(x).replaceAll("\\s*(display)\\(\\s*", "").replaceAll("\\s*\\)\\s*", "");
+                        String temp = filter.get(x).replaceAll("\\s*(display)\\(\\s*", "").replaceAll("\\s*\\)\\s*", "");
 			Pattern checker = Pattern.compile(temp);
 			for(int y = 0; y < this.results.length; y++){
 				Matcher result = checker.matcher(this.results[y]);
@@ -82,5 +82,47 @@ public class Display {
         this.htmlCode = this.htmlCode.replaceAll("@>", "");
         this.htmlCode = this.htmlCode.replaceAll("(?<=(<@BLE))(\\w|\\d|\\n|[().,\\-:;@#$%^&*\\[\\]\"'+–/\\/®°°!?{}|`~=]|\\t|\\s)+?(?=(@>))", "");
 		
+    }
+        
+    public void Repeat(){
+        		Pattern pattern = Pattern.compile(Display.EXTRACT_TAG);
+		Matcher matcher = pattern.matcher(this.htmlCode);
+		
+		ArrayList<String> contents = new ArrayList<>();
+		while(matcher.find()){
+			contents.add(matcher.group(0));
+		}
+		
+		@SuppressWarnings("unchecked")
+		ArrayList<String> clone = (ArrayList<String>) contents.clone();
+		ArrayList<String> filter = new ArrayList<>();
+		
+                Pattern catchDisplay = Pattern.compile(Display.DISPLAY_TAG);
+		for(int x = 0; x < clone.size(); x++){
+                                        Matcher matchDisplay = catchDisplay.matcher(clone.get(x));
+                                        while(matchDisplay.find()){
+                                                if(filter.indexOf(clone.get(x).replaceAll("\\s*", "")) == -1){
+                                                filter.add(clone.get(x).replaceAll("\\s*", ""));
+                                            }
+                                        }
+		}
+		
+		for(int x = 0; x < filter.size(); x++){
+                        String temp = filter.get(x).replaceAll("\\s*(repeat)\\(\\s*", "").replaceAll("\\s*\\)\\s*", "");
+			Pattern checker = Pattern.compile(temp);
+			for(int y = 0; y < this.results.length; y++){
+				Matcher result = checker.matcher(this.results[y]);
+				Matcher htmlCode = checker.matcher(this.htmlCode);
+				if(result.find() && htmlCode.find()){
+					this.htmlCode = this.htmlCode
+							.replaceAll("\\s*(repeat)\\(\\s*"+temp+"\\s*\\)\\s*", this.results[0]);
+				}
+			}
+		}
+                
+        this.htmlCode = this.htmlCode.replaceAll("<@BLE","");
+        this.htmlCode = this.htmlCode.replaceAll("@>", "");
+        this.htmlCode = this.htmlCode.replaceAll("(?<=(<@BLE))(\\w|\\d|\\n|[().,\\-:;@#$%^&*\\[\\]\"'+–/\\/®°°!?{}|`~=]|\\t|\\s)+?(?=(@>))", "");
+	
     }
 }

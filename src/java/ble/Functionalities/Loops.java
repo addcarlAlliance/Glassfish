@@ -10,6 +10,8 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -85,10 +87,37 @@ public class Loops {
                     arrayName = arrayName.replaceAll("\\(|\\)", "");
                     Data<Array2dBle> var = (Data<Array2dBle>)DataTypes.vars.get(arrayName);
                     Array2dBle arr = var.getValue();
+                    var = DataTypes.vars.get("users");
+                    Array2dBle users = var.getValue();
                     n = arr.size();
+                    List<String> results = new ArrayList();
+                    String wholearray ="";
                     while(n-- > 0){
                         
+                        int u = -1;
+                        int j;
+                        for (j = 0 ; j < users.size() && u == (int)arr.getValueAt(Integer.toString(n), "teacherID") ; j++){
+                            u = (int)users.getValueAt(Integer.toString(j), "id");
+                            
+                        }
+                        String display = "<div class=\"row card__holder\" id=\"ann"+n+"\">\n" +
+                                        "            <div class=\"card__byline col-md-12 col-sm-12 col-xs-12\">\n" +
+                                        "              <span class=\"card__byline--by\">by</span>\n" +
+                                        "              <span class=\"card__byline--name\">"+users.getValueAt(Integer.toString(j), "name")+"</span>\n" +
+                                        "            </div>\n" +
+                                        "            <div class=\"card__button-holder\">\n" +
+                                        "              <div><button type = \"button\" class=\"btn btn-default\" onClick=\"hide('ann"+n+"')\">Hide</button></div>\n" +
+                                        "              <div><a href=\"viewAnnouncements.ble\">View announcement</a></div>\n" +
+                                        "            </div>\n" +
+                                        "            <div class=\"card__message-preview col-md-9 col-sm-12 col-xs-12\">\n" +
+                                        arr.getValueAt(Integer.toString(n), "announcement")+
+                                        "            </div>\n" +
+                                        "          </div>";
+                        wholearray+=display;
                     }
+
+                    results.add(wholearray);
+                    ble.injector.Display postHtml = new ble.injector.Display("here", (String[]) results.toArray());
                 }
             }
         }

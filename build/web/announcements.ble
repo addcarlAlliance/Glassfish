@@ -41,6 +41,7 @@
           <div class="page__date-separator">
             Today
           </div>
+          <?
           <div class="row card__holder" id="sample1">
             <div class="card__byline col-md-12 col-sm-12 col-xs-12">
               <span class="card__byline--by">by</span>
