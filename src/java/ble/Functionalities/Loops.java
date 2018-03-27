@@ -86,6 +86,7 @@ public class Loops {
                     Data<Array2dBle> var = (Data<Array2dBle>)DataTypes.vars.get(arrayName);
                     Array2dBle arr = var.getValue();
                     n = arr.size();
+                    
                     while(n-- > 0){
                         
                     }
